@@ -2,7 +2,9 @@ package br.com.attornatus.rafaelabreu.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -10,6 +12,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -25,8 +30,11 @@ public class Pessoa implements Serializable {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	private Date dataNascimento;
 	
-	public Pessoa() {
-		
+	@ManyToMany
+	@JoinTable(name = "tb_pessoa_endereco", joinColumns = @JoinColumn(name = "pessoa_id"), inverseJoinColumns = @JoinColumn(name = "endereco_id"))
+	private Set<Endereco> endereco = new HashSet<>();
+	
+	public Pessoa() {	
 	}
 
 	public Pessoa(Long id, String nome, Date dataNascimento) {
@@ -58,6 +66,10 @@ public class Pessoa implements Serializable {
 
 	public void setDataNascimento(Date dataNascimento) {
 		this.dataNascimento = dataNascimento;
+	}
+
+	public Set<Endereco> getEndereco() {
+		return endereco;
 	}
 
 	@Override

@@ -1,12 +1,17 @@
 package br.com.attornatus.rafaelabreu.entities;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -21,18 +26,24 @@ public class Endereco implements Serializable{
 	private String cep;
 	private Integer numero;
 	private String cidade;
+	private String tipo;
+	
+	@JsonIgnore
+	@ManyToMany(mappedBy = "endereco")
+	private Set<Pessoa> pessoa = new HashSet<>();
 	
 	public Endereco() {
 		
 	}
 
-	public Endereco(Long id, String logradouro, String cep, Integer numero, String cidade) {
+	public Endereco(Long id, String logradouro, String cep, Integer numero, String cidade, String tipo) {
 		super();
 		this.id = id;
 		this.logradouro = logradouro;
 		this.cep = cep;
 		this.numero = numero;
 		this.cidade = cidade;
+		this.tipo = tipo;
 	}
 
 	public Long getId() {
@@ -74,6 +85,18 @@ public class Endereco implements Serializable{
 	public void setCidade(String cidade) {
 		this.cidade = cidade;
 	}
+	
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+
+	public Set<Pessoa> getPessoa() {
+		return pessoa;
+	}
 
 	@Override
 	public int hashCode() {
@@ -91,4 +114,6 @@ public class Endereco implements Serializable{
 		Endereco other = (Endereco) obj;
 		return Objects.equals(cidade, other.cidade);
 	}
+
+	
 }
