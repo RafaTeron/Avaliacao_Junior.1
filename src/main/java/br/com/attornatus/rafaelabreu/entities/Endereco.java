@@ -1,9 +1,7 @@
 package br.com.attornatus.rafaelabreu.entities;
 
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -11,7 +9,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -26,17 +25,19 @@ public class Endereco implements Serializable{
 	private String cep;
 	private Integer numero;
 	private String cidade;
-	private String tipo;
+	
+	private boolean tipo;
 	
 	@JsonIgnore
-	@ManyToMany(mappedBy = "endereco")
-	private Set<Pessoa> pessoa = new HashSet<>();
+	@ManyToOne
+	@JoinColumn(name = "pessoa_id")
+	private Pessoa pessoa;
 	
 	public Endereco() {
 		
 	}
 
-	public Endereco(Long id, String logradouro, String cep, Integer numero, String cidade, String tipo) {
+	public Endereco(Long id, String logradouro, String cep, Integer numero, String cidade, boolean tipo, Pessoa pessoa) {
 		super();
 		this.id = id;
 		this.logradouro = logradouro;
@@ -44,6 +45,7 @@ public class Endereco implements Serializable{
 		this.numero = numero;
 		this.cidade = cidade;
 		this.tipo = tipo;
+		this.pessoa = pessoa;
 	}
 
 	public Long getId() {
@@ -86,16 +88,20 @@ public class Endereco implements Serializable{
 		this.cidade = cidade;
 	}
 	
-	public String getTipo() {
+	public boolean getTipo() {
 		return tipo;
 	}
 
-	public void setTipo(String tipo) {
+	public void setTipo(boolean tipo) {
 		this.tipo = tipo;
 	}
 
-	public Set<Pessoa> getPessoa() {
+	public Pessoa getPessoa() {
 		return pessoa;
+	}
+
+	public void setPessoa(Pessoa pessoa) {
+		this.pessoa = pessoa;
 	}
 
 	@Override

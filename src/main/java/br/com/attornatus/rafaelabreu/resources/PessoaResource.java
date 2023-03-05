@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.attornatus.rafaelabreu.entities.Endereco;
 import br.com.attornatus.rafaelabreu.entities.Pessoa;
 import br.com.attornatus.rafaelabreu.services.PessoaService;
 
@@ -50,6 +51,12 @@ public class PessoaResource {
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		service.deleteById(id);
 		return ResponseEntity.noContent().build();
+	}
+	
+	@PostMapping(value = "/{id}/addEndereco")
+	public ResponseEntity<Endereco> addEndereco(@PathVariable Long id, @RequestBody Endereco endereco){
+		Endereco obj = service.addEndereco(endereco, id);
+		return ResponseEntity.ok().body(obj);
 	}
 
 }

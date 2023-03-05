@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.attornatus.rafaelabreu.entities.Endereco;
 import br.com.attornatus.rafaelabreu.entities.Pessoa;
 import br.com.attornatus.rafaelabreu.repositories.PessoaRepository;
 
@@ -14,6 +15,8 @@ public class PessoaService {
 	
 	@Autowired
 	private PessoaRepository repository;
+	@Autowired
+	private EnderecoService enderecoService;
 	
 	public List<Pessoa> findAll() {
 		return repository.findAll();
@@ -42,5 +45,26 @@ public class PessoaService {
 	public void deleteById(Long id) {
 	    repository.deleteById(id);
 	}
-
+	
+	
+	public Endereco addEndereco(Endereco endereco, Long idPessoa) {
+		Optional<Pessoa> obj = repository.findById(idPessoa);
+		endereco.setPessoa(obj.get());
+		List<Endereco> enderecos =  obj.get().getEndereco();
+		if(enderecos == null) {
+			endereco.setTipo(true);
+			obj.get().getEndereco().add(endereco);
+			return enderecoService.save(endereco);			
+		}
+		if(endereco.getTipo() == true) {
+			for(Endereco objEndereco : obj.get().getEndereco()) {
+				objEndereco.setTipo(false);
+				enderecoService.update(objEndereco.getId(), objEndereco);
+			}
+			obj.get().getEndereco().add(endereco);
+			return enderecoService.save(endereco);
+		}
+	    
+	    return enderecoService.save(endereco);
+	}
 }
