@@ -23,5 +23,27 @@ public class EnderecoService {
 		Optional<Endereco> obj =repository.findById(id);
 		return obj.get();
 	}
+	
+	public Endereco save(Endereco obj) {
+	    return repository.save(obj);
+	}
+	
+	public Endereco update(Long id, Endereco obj) {
+	    Endereco entity = repository.getReferenceById(id);
+	    updateData(entity, obj);
+	    return repository.save(entity);
+	}
+	
+	private void updateData(Endereco entity, Endereco obj) {
+		entity.setLogradouro(obj.getLogradouro());
+		entity.setCep(obj.getCep());
+		entity.setNumero(obj.getNumero());
+		entity.setCidade(obj.getCidade());
+		entity.setTipo(obj.getTipo());
+	}
+
+	public void deleteById(Long id) {
+	    repository.deleteById(id);
+	}
 
 }
