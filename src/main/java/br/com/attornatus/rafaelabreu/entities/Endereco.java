@@ -5,6 +5,7 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import br.com.attornatus.rafaelabreu.entities.enums.TipoEndereco;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,7 +27,7 @@ public class Endereco implements Serializable{
 	private Integer numero;
 	private String cidade;
 	
-	private boolean tipo;
+	private TipoEndereco tipo;
 	
 	@JsonIgnore
 	@ManyToOne
@@ -37,7 +38,7 @@ public class Endereco implements Serializable{
 		
 	}
 
-	public Endereco(Long id, String logradouro, String cep, Integer numero, String cidade, boolean tipo, Pessoa pessoa) {
+	public Endereco(Long id, String logradouro, String cep, Integer numero, String cidade, TipoEndereco tipo, Pessoa pessoa) {
 		super();
 		this.id = id;
 		this.logradouro = logradouro;
@@ -88,13 +89,13 @@ public class Endereco implements Serializable{
 		this.cidade = cidade;
 	}
 	
-	public boolean getTipo() {
+	public TipoEndereco getTipo() {
 		return tipo;
 	}
 
-	public void setTipo(boolean tipo) {
-		this.tipo = tipo;
-	}
+	public void setTipo(TipoEndereco tipo) {
+        this.tipo = tipo;
+    }
 
 	public Pessoa getPessoa() {
 		return pessoa;
@@ -121,5 +122,4 @@ public class Endereco implements Serializable{
 		return Objects.equals(cidade, other.cidade);
 	}
 
-	
 }

@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Profile;
 
 import br.com.attornatus.rafaelabreu.entities.Endereco;
 import br.com.attornatus.rafaelabreu.entities.Pessoa;
+import br.com.attornatus.rafaelabreu.entities.enums.TipoEndereco;
 import br.com.attornatus.rafaelabreu.repositories.EnderecoRepository;
 import br.com.attornatus.rafaelabreu.repositories.PessoaRepository;
 
@@ -29,11 +30,11 @@ public class TestConfig implements CommandLineRunner{
 	public void run(String... args) throws Exception {
 		
 	    
-		Endereco end1 = new Endereco(null,"Av Padre rose", "99999-99", 99, "Rio de Janeiro", true, null);
-		Endereco end2 = new Endereco(null,"Av brasil", "99999-99", 99, "Rio de Janeiro", true, null);
-		Endereco end3 = new Endereco(null,"Rua Passos", "99999-99", 99, "Rio de Janeiro", true, null);
-		Endereco end4 = new Endereco(null,"Rua Paraguai", "99999-99", 99, "Rio de Janeiro", false, null);
-		Endereco end5 = new Endereco(null,"Av Rio Branco", "99999-99", 99, "Rio de Janeiro", false , null);
+		Endereco end1 = new Endereco(null,"Av Padre rose", "99999-99", 99, "Rio de Janeiro", TipoEndereco.PRINCIPAL, null);
+		Endereco end2 = new Endereco(null,"Av brasil", "99999-99", 99, "Rio de Janeiro", TipoEndereco.SECUNDARIO, null);
+		Endereco end3 = new Endereco(null,"Rua Passos", "99999-99", 99, "Rio de Janeiro", TipoEndereco.PRINCIPAL, null);
+		Endereco end4 = new Endereco(null,"Rua Paraguai", "99999-99", 99, "Rio de Janeiro", TipoEndereco.PRINCIPAL, null);
+		Endereco end5 = new Endereco(null,"Av Rio Branco", "99999-99", 99, "Rio de Janeiro", TipoEndereco.SECUNDARIO , null);
 		
 		Pessoa p1 = new Pessoa(null,"Rafael",sdf.parse("15/01/1996"));
 		Pessoa p2 = new Pessoa(null,"Heitor",sdf.parse("19/04/2023"));

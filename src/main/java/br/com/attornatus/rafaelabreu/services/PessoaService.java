@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.attornatus.rafaelabreu.entities.Endereco;
 import br.com.attornatus.rafaelabreu.entities.Pessoa;
+import br.com.attornatus.rafaelabreu.entities.enums.TipoEndereco;
 import br.com.attornatus.rafaelabreu.repositories.PessoaRepository;
 
 @Service
@@ -51,20 +52,46 @@ public class PessoaService {
 		Optional<Pessoa> obj = repository.findById(idPessoa);
 		endereco.setPessoa(obj.get());
 		List<Endereco> enderecos =  obj.get().getEndereco();
-		if(enderecos == null) {
-			endereco.setTipo(true);
+		if(enderecos.isEmpty()) {
+			endereco.setTipo(TipoEndereco.PRINCIPAL);
 			obj.get().getEndereco().add(endereco);
 			return enderecoService.save(endereco);			
 		}
-		if(endereco.getTipo() == true) {
+		if(endereco.getTipo() == TipoEndereco.PRINCIPAL) {
 			for(Endereco objEndereco : obj.get().getEndereco()) {
-				objEndereco.setTipo(false);
+				objEndereco.setTipo(TipoEndereco.SECUNDARIO);
 				enderecoService.update(objEndereco.getId(), objEndereco);
 			}
 			obj.get().getEndereco().add(endereco);
 			return enderecoService.save(endereco);
 		}
-	    
+		endereco.setTipo(TipoEndereco.SECUNDARIO);
 	    return enderecoService.save(endereco);
+	}
+	
+	public Endereco updateEndereco(Endereco endereco, Long idPessoa) throws Exception {
+		Optional<Pessoa> obj = repository.findById(idPessoa);
+		endereco.setPessoa(obj.get());
+		
+		boolean existe = false;
+		for(Endereco objEndereco : obj.get().getEndereco()) {
+			if(endereco.getId() == objEndereco.getId()){
+				existe = true;
+			}		
+		}
+		if(!existe) {
+			throw new Exception("Endereço não existe");
+		}
+		
+		if(endereco.getTipo() == TipoEndereco.SECUNDARIO) {
+			return enderecoService.save(endereco);
+		}
+		
+		for(Endereco objEndereco : obj.get().getEndereco()) {
+			objEndereco.setTipo(TipoEndereco.SECUNDARIO);
+			enderecoService.update(objEndereco.getId(), objEndereco);
+		}
+		obj.get().getEndereco().add(endereco);
+		return enderecoService.save(endereco);
 	}
 }

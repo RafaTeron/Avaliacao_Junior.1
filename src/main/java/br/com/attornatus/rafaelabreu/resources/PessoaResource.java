@@ -58,5 +58,11 @@ public class PessoaResource {
 		Endereco obj = service.addEndereco(endereco, id);
 		return ResponseEntity.ok().body(obj);
 	}
+	
+	@PostMapping(value = "/{id}/updateEndereco")
+	public ResponseEntity<Endereco> updateEndereco(@PathVariable Long id, @RequestBody Endereco endereco) throws Exception{
+		Endereco obj = service.updateEndereco(endereco, id);
+		return ResponseEntity.ok().body(obj);
+	}
 
 }
